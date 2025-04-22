@@ -1,5 +1,8 @@
+
 import React, { useState, useEffect } from 'react';
-import { usePDF } from 'react-to-pdf';
+import { PDFViewer, pdf } from '@react-pdf/renderer';
+import { saveAs } from 'file-saver';
+
 import Header from './components/Header';
 import CompanyInfoForm from './components/CompanyInfo';
 import ClientInfoForm from './components/ClientInfo';
@@ -7,25 +10,23 @@ import QuoteDetails from './components/QuoteDetails';
 import LineItemsComponent from './components/LineItems';
 import TotalSection from './components/TotalSection';
 import NotesSection from './components/NotesSection';
-import ActionsSection from './components/ActionsSection';
 import PdfDocument from './components/PdfDocument';
 import { CompanyInfo, ClientInfo, LineItem, EstimateData } from './types';
-import { 
-  generateQuoteNumber, 
-  formatDate, 
+import {
+  generateQuoteNumber,
+  formatDate,
   calculateFutureDate,
   calculateSubtotal,
-  calculateTotal
+  calculateTotal,
 } from './utils/helpers';
 
 function App() {
-  // Initialize with empty data
   const defaultCompanyInfo: CompanyInfo = {
     name: '',
     address: '',
     phone: '',
     email: '',
-    website: ''
+    website: '',
   };
 
   const defaultClientInfo: ClientInfo = {
@@ -33,10 +34,9 @@ function App() {
     company: '',
     address: '',
     phone: '',
-    email: ''
+    email: '',
   };
 
-  // State for all form data
   const [companyInfo, setCompanyInfo] = useState<CompanyInfo>(defaultCompanyInfo);
   const [clientInfo, setClientInfo] = useState<ClientInfo>(defaultClientInfo);
   const [quoteNumber, setQuoteNumber] = useState<string>(generateQuoteNumber());
@@ -47,25 +47,31 @@ function App() {
   const [lineItems, setLineItems] = useState<LineItem[]>([]);
   const [subtotal, setSubtotal] = useState<number>(0);
   const [discount, setDiscount] = useState<number>(0);
-  const [tax, setTax] = useState<number>(5); // Default 5% VAT in UAE
+  const [tax, setTax] = useState<number>(5); // Default 5% VAT
   const [total, setTotal] = useState<number>(0);
   const [notes, setNotes] = useState<string>('');
-
-  // PDF generation
-  const { toPDF, targetRef } = usePDF({
-    filename: `Quote-${quoteNumber}.pdf`,
-  });
-
-  // Calculate subtotal and total whenever line items change
+  const [showPdfPreview, setShowPdfPreview] = useState<boolean>(false);
+  const [isPdfGenerating, setIsPdfGenerating] = useState(false);
+  const handleDownloadPdf = async () => {
+    setIsPdfGenerating(true);
+    try {
+      const blob = await pdf(<PdfDocument data={estimateData} />).toBlob();
+      saveAs(blob, `Quote-${quoteNumber}.pdf`);
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+      alert('Error generating PDF. Please try again.');
+    } finally {
+      setIsPdfGenerating(false);
+    }
+  };
   useEffect(() => {
     const newSubtotal = calculateSubtotal(lineItems);
     setSubtotal(newSubtotal);
-    
+
     const newTotal = calculateTotal(newSubtotal, discount, tax);
     setTotal(newTotal);
   }, [lineItems, discount, tax]);
 
-  // Handle save draft
   const handleSave = () => {
     const data: EstimateData = {
       companyInfo,
@@ -78,16 +84,15 @@ function App() {
       discount,
       tax,
       total,
-      notes
+      notes,
     };
-    
+
     localStorage.setItem('quoteData', JSON.stringify(data));
     alert('Quote saved successfully!');
   };
 
-  // Handle reset form
   const handleReset = () => {
-    if (confirm('Are you sure you want to reset the form? All data will be lost.')) {
+    if (window.confirm('Are you sure you want to reset the form? All data will be lost.')) {
       setCompanyInfo(defaultCompanyInfo);
       setClientInfo(defaultClientInfo);
       setQuoteNumber(generateQuoteNumber());
@@ -101,7 +106,10 @@ function App() {
     }
   };
 
-  // Load saved data on component mount
+  const togglePdfPreview = () => {
+    setShowPdfPreview(!showPdfPreview);
+  };
+
   useEffect(() => {
     const savedData = localStorage.getItem('quoteData');
     if (savedData) {
@@ -122,7 +130,6 @@ function App() {
     }
   }, []);
 
-  // Prepare data for PDF generation
   const estimateData: EstimateData = {
     companyInfo,
     clientInfo,
@@ -134,60 +141,98 @@ function App() {
     discount,
     tax,
     total,
-    notes
+    notes,
   };
 
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
-      
-      <main className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 gap-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <CompanyInfoForm companyInfo={companyInfo} onChange={setCompanyInfo} />
-            <ClientInfoForm clientInfo={clientInfo} onChange={setClientInfo} />
-          </div>
-          
-          <QuoteDetails 
-            quoteNumber={quoteNumber}
-            date={date}
-            validUntil={validUntil}
-            onDateChange={setDate}
-            onValidUntilChange={setValidUntil}
-          />
-          
-          <LineItemsComponent lineItems={lineItems} onChange={setLineItems} />
-          
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-2">
-              <NotesSection notes={notes} onChange={setNotes} />
-            </div>
-            <div>
-              <TotalSection 
-                subtotal={subtotal}
-                discount={discount}
-                tax={tax}
-                total={total}
-                onDiscountChange={setDiscount}
-                onTaxChange={setTax}
-              />
-            </div>
-          </div>
-          
-          <ActionsSection 
-            onSave={handleSave} 
-            onReset={handleReset} 
-            onDownloadPdf={toPDF}
-          />
-        </div>
-      </main>
 
-      {/* Hidden div for PDF generation */}
-      <div style={{ display: 'none' }}>
-        <div ref={targetRef}>
-          <PdfDocument data={estimateData} />
-        </div>
-      </div>
+      <main className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+        {!showPdfPreview ? (
+          <div className="grid grid-cols-1 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <CompanyInfoForm companyInfo={companyInfo} onChange={setCompanyInfo} />
+              <ClientInfoForm clientInfo={clientInfo} onChange={setClientInfo} />
+            </div>
+
+            <QuoteDetails
+              quoteNumber={quoteNumber}
+              date={date}
+              validUntil={validUntil}
+              onDateChange={setDate}
+              onValidUntilChange={setValidUntil}
+            />
+
+            <LineItemsComponent lineItems={lineItems} onChange={setLineItems} />
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <div className="lg:col-span-2">
+                <NotesSection notes={notes} onChange={setNotes} />
+              </div>
+              <div>
+                <TotalSection
+                  subtotal={subtotal}
+                  discount={discount}
+                  tax={tax}
+                  total={total}
+                  onDiscountChange={setDiscount}
+                  onTaxChange={setTax}
+                />
+              </div>
+            </div>
+
+            <div className="flex justify-between items-center">
+              <div className="flex space-x-4">
+                <button
+                  onClick={handleSave}
+                  className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+                >
+                  Save Quote
+                </button>
+                <button
+                  onClick={handleReset}
+                  className="bg-gray-200 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-300"
+                >
+                  Reset
+                </button>
+              </div>
+              <div className="flex space-x-4">
+                <button
+                  onClick={togglePdfPreview}
+                  className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700"
+                >
+                  Preview PDF
+                </button>
+                <button
+    onClick={handleDownloadPdf}
+    disabled={isPdfGenerating}
+    className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 disabled:bg-green-400"
+  >
+    {isPdfGenerating ? 'Preparing PDF...' : 'Download PDF'}
+  </button>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="flex flex-col h-screen">
+            <div className="flex justify-between mb-4">
+              <h2 className="text-xl font-bold">PDF Preview</h2>
+              <button
+                onClick={togglePdfPreview}
+                className="bg-gray-200 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-300"
+              >
+                Back to Editor
+              </button>
+            </div>
+            <div className="flex-1 border border-gray-300 rounded">
+              <PDFViewer width="100%" height="100%" className="rounded">
+                <PdfDocument data={estimateData} />
+              </PDFViewer>
+            </div>
+          </div>
+        )}
+      </main>
     </div>
   );
 }

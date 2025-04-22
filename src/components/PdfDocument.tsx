@@ -1,52 +1,83 @@
 import React from 'react';
-import { Document, Page, Text, View, StyleSheet, Font } from '@react-pdf/renderer';
-import { EstimateData, LineItem, SubService } from '../types';
+import { 
+  Document, 
+  Page, 
+  Text, 
+  View, 
+  StyleSheet, 
+  Font 
+} from '@react-pdf/renderer';
+import { EstimateData, LineItem } from '../types';
 import { formatAED } from '../utils/helpers';
 import { getServiceById } from '../data/services';
+
+// Register fonts for better typography
+Font.register({
+  family: 'Roboto',
+  fonts: [
+    { src: 'https://cdnjs.cloudflare.com/ajax/libs/ink/3.1.10/fonts/Roboto/roboto-light-webfont.ttf', fontWeight: 300 },
+    { src: 'https://cdnjs.cloudflare.com/ajax/libs/ink/3.1.10/fonts/Roboto/roboto-regular-webfont.ttf', fontWeight: 400 },
+    { src: 'https://cdnjs.cloudflare.com/ajax/libs/ink/3.1.10/fonts/Roboto/roboto-medium-webfont.ttf', fontWeight: 500 },
+    { src: 'https://cdnjs.cloudflare.com/ajax/libs/ink/3.1.10/fonts/Roboto/roboto-bold-webfont.ttf', fontWeight: 700 },
+  ]
+});
 
 // Create styles
 const styles = StyleSheet.create({
   page: {
     padding: 30,
-    fontSize: 12,
-    fontFamily: 'Helvetica',
+    fontFamily: 'Roboto',
+    fontSize: 10,
+    lineHeight: 1.5,
     color: '#333333',
   },
+  spacer: {
+    height: 15,
+  },
   header: {
-    marginBottom: 20,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginBottom: 30,
+    borderBottomWidth: 2,
+    borderBottomColor: '#1E40AF',
+    paddingBottom: 10,
   },
-  companyInfo: {
-    marginBottom: 10,
+  headerLeft: {
+    flex: 2,
+  },
+  headerRight: {
+    flex: 1,
+    alignItems: 'flex-end',
   },
   companyName: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#1E40AF',
+    marginBottom: 5,
+  },
+  companyDetail: {
+    fontSize: 9,
+    color: '#4B5563',
+  },
+  documentTitle: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 5,
-    color: '#1E40AF',
-  },
-  contactInfo: {
-    marginBottom: 2,
-  },
-  quoteTitle: {
-    fontSize: 28,
-    fontWeight: 'bold',
     textAlign: 'center',
-    marginVertical: 20,
     color: '#1E40AF',
+    marginVertical: 20,
+    textTransform: 'uppercase',
+  },
+  section: {
+    marginBottom: 15,
   },
   sectionTitle: {
-    fontSize: 16,
+    fontSize: 12,
     fontWeight: 'bold',
     marginBottom: 8,
-    paddingBottom: 4,
+    color: '#1E40AF',
     borderBottomWidth: 1,
     borderBottomColor: '#E5E7EB',
-    color: '#1E40AF',
-  },
-  clientSection: {
-    marginBottom: 20,
+    paddingBottom: 3,
   },
   infoGrid: {
     flexDirection: 'row',
@@ -54,69 +85,89 @@ const styles = StyleSheet.create({
   },
   infoCol: {
     flex: 1,
+    paddingRight: 10,
   },
-  label: {
+  infoItem: {
+    marginBottom: 5,
+  },
+  infoLabel: {
     fontWeight: 'bold',
-    marginBottom: 2,
+    fontSize: 9,
+    color: '#4B5563',
   },
-  value: {
-    marginBottom: 6,
+  infoValue: {
+    fontSize: 10,
+  },
+  clientValue: {
+    fontSize: 10,
+    marginBottom: 3,
   },
   table: {
-    marginVertical: 10,
+    marginVertical: 15,
   },
   tableHeader: {
     flexDirection: 'row',
-    borderBottomWidth: 1,
-    borderBottomColor: '#E5E7EB',
     backgroundColor: '#F3F4F6',
+    borderBottomWidth: 1,
+    borderBottomColor: '#CBD5E1',
     paddingVertical: 8,
+    paddingHorizontal: 5,
     fontWeight: 'bold',
+    fontSize: 9,
+    color: '#1E3A8A',
   },
   tableRow: {
     flexDirection: 'row',
     borderBottomWidth: 1,
     borderBottomColor: '#E5E7EB',
-    paddingVertical: 8,
+    paddingVertical: 6,
+    paddingHorizontal: 5,
+    fontSize: 9,
   },
-  description: {
+  tableCellDescription: {
     flex: 3,
   },
-  subService: {
-    marginLeft: 10,
-    fontSize: 10,
-    color: '#6B7280',
-  },
-  quantity: {
+  tableCellQuantity: {
     flex: 1,
     textAlign: 'center',
   },
-  rate: {
+  tableCellRate: {
     flex: 1,
     textAlign: 'right',
   },
-  amount: {
+  tableCellAmount: {
     flex: 1,
     textAlign: 'right',
+  },
+  subServiceItem: {
+    paddingLeft: 10,
+    fontSize: 8,
+    color: '#6B7280',
+    paddingTop: 2,
   },
   totalsSection: {
-    marginTop: 20,
-    paddingTop: 10,
-    borderTopWidth: 1,
-    borderTopColor: '#E5E7EB',
+    marginTop: 30,
+    alignItems: 'flex-end',
   },
   totalRow: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 4,
+    marginBottom: 5,
   },
-  grandTotalRow: {
+  totalLabel: {
+    width: 100,
+    textAlign: 'right',
+    paddingRight: 10,
+  },
+  totalValue: {
+    width: 100,
+    textAlign: 'right',
+  },
+  grandTotal: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 8,
-    paddingTop: 8,
     borderTopWidth: 1,
-    borderTopColor: '#E5E7EB',
+    borderTopColor: '#CBD5E1',
+    marginTop: 5,
+    paddingTop: 5,
     fontWeight: 'bold',
   },
   notes: {
@@ -126,17 +177,21 @@ const styles = StyleSheet.create({
     borderTopColor: '#E5E7EB',
   },
   noteText: {
-    fontSize: 10,
+    fontSize: 9,
     color: '#4B5563',
+    lineHeight: 1.4,
   },
   footer: {
-    marginTop: 40,
+    position: 'absolute',
+    bottom: 30,
+    left: 30,
+    right: 30,
+    textAlign: 'center',
     paddingTop: 10,
     borderTopWidth: 1,
     borderTopColor: '#E5E7EB',
-    fontSize: 10,
+    fontSize: 8,
     color: '#6B7280',
-    textAlign: 'center',
   },
 });
 
@@ -145,13 +200,29 @@ interface PdfDocumentProps {
 }
 
 const PdfDocument: React.FC<PdfDocumentProps> = ({ data }) => {
+  // Safely handle undefined data
+  if (!data || !data.companyInfo || !data.clientInfo || !data.lineItems) {
+    return (
+      <Document>
+        <Page size="A4">
+          <Text>Error: Missing required data</Text>
+        </Page>
+      </Document>
+    );
+  }
+  
   const getSubServiceNames = (item: LineItem): string[] => {
-    const service = getServiceById(item.service);
-    if (!service) return [];
-    
-    return service.subServices
-      .filter(sub => item.selectedSubServices.includes(sub.id))
-      .map(sub => sub.name);
+    try {
+      const service = getServiceById(item.service);
+      if (!service) return [];
+      
+      return service.subServices
+        .filter(sub => item.selectedSubServices && item.selectedSubServices.includes(sub.id))
+        .map(sub => sub.name);
+    } catch (error) {
+      console.error('Error getting sub-service names:', error);
+      return [];
+    }
   };
 
   return (
@@ -159,42 +230,55 @@ const PdfDocument: React.FC<PdfDocumentProps> = ({ data }) => {
       <Page size="A4" style={styles.page}>
         {/* Header with company info */}
         <View style={styles.header}>
-          <View style={styles.companyInfo}>
-            <Text style={styles.companyName}>{data.companyInfo.name}</Text>
-            <Text style={styles.contactInfo}>{data.companyInfo.address}</Text>
-            <Text style={styles.contactInfo}>Phone: {data.companyInfo.phone}</Text>
-            <Text style={styles.contactInfo}>Email: {data.companyInfo.email}</Text>
-            <Text style={styles.contactInfo}>Website: {data.companyInfo.website}</Text>
+          <View style={styles.headerLeft}>
+            <Text style={styles.companyName}>{data.companyInfo.name || 'Company Name'}</Text>
+            <Text style={styles.companyDetail}>{data.companyInfo.address || ''}</Text>
+            <Text style={styles.companyDetail}>
+              {data.companyInfo.phone ? `Phone: ${data.companyInfo.phone}` : ''}
+              {data.companyInfo.phone && data.companyInfo.email ? ' | ' : ''}
+              {data.companyInfo.email ? `Email: ${data.companyInfo.email}` : ''}
+            </Text>
+            <Text style={styles.companyDetail}>
+              {data.companyInfo.website ? `Website: ${data.companyInfo.website}` : ''}
+            </Text>
+          </View>
+          <View style={styles.headerRight}>
+            <Text style={styles.infoLabel}>QUOTATION</Text>
+            <Text style={styles.infoValue}>#{data.quoteNumber || 'Q0001'}</Text>
           </View>
         </View>
 
-        <Text style={styles.quoteTitle}>QUOTATION</Text>
+        <Text style={styles.documentTitle}>Quotation</Text>
 
         {/* Quote Info and Client Info */}
         <View style={styles.infoGrid}>
           <View style={styles.infoCol}>
-            <Text style={styles.sectionTitle}>Quote Details</Text>
-            <View>
-              <Text style={styles.label}>Quote Number:</Text>
-              <Text style={styles.value}>{data.quoteNumber}</Text>
-            </View>
-            <View>
-              <Text style={styles.label}>Date:</Text>
-              <Text style={styles.value}>{data.date}</Text>
-            </View>
-            <View>
-              <Text style={styles.label}>Valid Until:</Text>
-              <Text style={styles.value}>{data.validUntil}</Text>
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>Quote Details</Text>
+              <View style={styles.infoItem}>
+                <Text style={styles.infoLabel}>Quote Number:</Text>
+                <Text style={styles.infoValue}>{data.quoteNumber || 'Q0001'}</Text>
+              </View>
+              <View style={styles.infoItem}>
+                <Text style={styles.infoLabel}>Date:</Text>
+                <Text style={styles.infoValue}>{data.date || 'N/A'}</Text>
+              </View>
+              <View style={styles.infoItem}>
+                <Text style={styles.infoLabel}>Valid Until:</Text>
+                <Text style={styles.infoValue}>{data.validUntil || 'N/A'}</Text>
+              </View>
             </View>
           </View>
 
           <View style={styles.infoCol}>
-            <Text style={styles.sectionTitle}>Client Information</Text>
-            <Text style={styles.value}>{data.clientInfo.name}</Text>
-            <Text style={styles.value}>{data.clientInfo.company}</Text>
-            <Text style={styles.value}>{data.clientInfo.address}</Text>
-            <Text style={styles.value}>Phone: {data.clientInfo.phone}</Text>
-            <Text style={styles.value}>Email: {data.clientInfo.email}</Text>
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>Client Information</Text>
+              <Text style={styles.clientValue}>{data.clientInfo.name || 'Client Name'}</Text>
+              {data.clientInfo.company && <Text style={styles.clientValue}>{data.clientInfo.company}</Text>}
+              {data.clientInfo.address && <Text style={styles.clientValue}>{data.clientInfo.address}</Text>}
+              {data.clientInfo.phone && <Text style={styles.clientValue}>Phone: {data.clientInfo.phone}</Text>}
+              {data.clientInfo.email && <Text style={styles.clientValue}>Email: {data.clientInfo.email}</Text>}
+            </View>
           </View>
         </View>
 
@@ -202,24 +286,28 @@ const PdfDocument: React.FC<PdfDocumentProps> = ({ data }) => {
         <View style={styles.table}>
           <Text style={styles.sectionTitle}>Services</Text>
           <View style={styles.tableHeader}>
-            <Text style={styles.description}>Description</Text>
-            <Text style={styles.quantity}>Qty</Text>
-            <Text style={styles.rate}>Rate</Text>
-            <Text style={styles.amount}>Amount</Text>
+            <Text style={styles.tableCellDescription}>Description</Text>
+            <Text style={styles.tableCellQuantity}>Qty</Text>
+            <Text style={styles.tableCellRate}>Rate</Text>
+            <Text style={styles.tableCellAmount}>Amount</Text>
           </View>
 
           {data.lineItems.map((item, index) => (
             <View key={index}>
               <View style={styles.tableRow}>
-                <View style={styles.description}>
-                  <Text>{item.description.split(':')[0]}</Text>
+                <View style={styles.tableCellDescription}>
+                  <Text>{(item.description && item.description.split(':')[0]) || 'Service'}</Text>
                   {getSubServiceNames(item).map((name, idx) => (
-                    <Text key={idx} style={styles.subService}>- {name}</Text>
+                    <Text key={idx} style={styles.subServiceItem}>• {name}</Text>
                   ))}
                 </View>
-                <Text style={styles.quantity}>{item.quantity}</Text>
-                <Text style={styles.rate}>{formatAED(item.rate)}</Text>
-                <Text style={styles.amount}>{formatAED(item.amount)}</Text>
+                <Text style={styles.tableCellQuantity}>{item.quantity || 1}</Text>
+                <Text style={styles.tableCellRate}>
+                  {formatAED(item.rate || 0)}
+                </Text>
+                <Text style={styles.tableCellAmount}>
+                  {formatAED(item.amount || 0)}
+                </Text>
               </View>
             </View>
           ))}
@@ -228,20 +316,24 @@ const PdfDocument: React.FC<PdfDocumentProps> = ({ data }) => {
         {/* Totals */}
         <View style={styles.totalsSection}>
           <View style={styles.totalRow}>
-            <Text>Subtotal:</Text>
-            <Text>{formatAED(data.subtotal)}</Text>
+            <Text style={styles.totalLabel}>Subtotal:</Text>
+            <Text style={styles.totalValue}>{formatAED(data.subtotal || 0)}</Text>
           </View>
           <View style={styles.totalRow}>
-            <Text>Discount ({data.discount}%):</Text>
-            <Text>{formatAED(data.subtotal * (data.discount / 100))}</Text>
+            <Text style={styles.totalLabel}>Discount ({data.discount || 0}%):</Text>
+            <Text style={styles.totalValue}>
+              {formatAED((data.subtotal || 0) * ((data.discount || 0) / 100))}
+            </Text>
           </View>
           <View style={styles.totalRow}>
-            <Text>Tax ({data.tax}%):</Text>
-            <Text>{formatAED(data.subtotal * (1 - data.discount / 100) * (data.tax / 100))}</Text>
+            <Text style={styles.totalLabel}>Tax ({data.tax || 0}%):</Text>
+            <Text style={styles.totalValue}>
+              {formatAED((data.subtotal || 0) * (1 - (data.discount || 0) / 100) * ((data.tax || 0) / 100))}
+            </Text>
           </View>
-          <View style={styles.grandTotalRow}>
-            <Text>Total:</Text>
-            <Text>{formatAED(data.total)}</Text>
+          <View style={[styles.totalRow, styles.grandTotal]}>
+            <Text style={styles.totalLabel}>Total:</Text>
+            <Text style={styles.totalValue}>{formatAED(data.total || 0)}</Text>
           </View>
         </View>
 
