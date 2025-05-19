@@ -11,7 +11,8 @@ export const services: Service[] = [
       { id: "branding-4", name: "Social Media Branding Kit" },
       { id: "branding-5", name: "Visual Style Guide" },
       { id: "branding-6", name: "Presentation Templates / Company Deck" },
-      { id: "branding-7", name: "App Icon & UI Style Input" }
+      { id: "branding-7", name: "App Icon & UI Style Input" },
+      { id: "branding-8", name: "Vehicle Branding" }
     ]
   },
   {
