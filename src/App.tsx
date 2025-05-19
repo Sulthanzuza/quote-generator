@@ -22,11 +22,10 @@ import {
 
 function App() {
   const defaultCompanyInfo: CompanyInfo = {
-    name: '',
-    address: '',
-    phone: '',
-    email: '',
-    website: '',
+    name: 'Aieera Digital Marketing',
+    phone: '+971 54 545 8167',
+    email: 'hello@aieera.com',
+    website: 'https://www.aieera.com',
   };
 
   const defaultClientInfo: ClientInfo = {
@@ -174,7 +173,7 @@ function App() {
                 <TotalSection
                   subtotal={subtotal}
                   discount={discount}
-                  tax={tax}
+                 
                   total={total}
                   onDiscountChange={setDiscount}
                   onTaxChange={setTax}

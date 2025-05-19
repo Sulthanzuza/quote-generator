@@ -146,9 +146,13 @@ const LineItemsComponent: React.FC<LineItemsProps> = ({ lineItems, onChange }) =
                         ))}
                       </select>
                       {item.description && (
-                        <div className="text-sm text-gray-600 mt-1 line-clamp-2">
-                          {item.description}
-                        </div>
+                       <div
+  className="text-sm text-gray-600 mt-1 break-words"
+  style={{ maxWidth: '10cm', whiteSpace: 'pre-line' }}
+>
+  {item.description}
+</div>
+
                       )}
                     </div>
                   </td>

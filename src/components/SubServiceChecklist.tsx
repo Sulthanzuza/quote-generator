@@ -41,6 +41,7 @@ const SubServiceChecklist: React.FC<SubServiceChecklistProps> = ({
               className="ml-2 block text-sm text-gray-700 cursor-pointer hover:text-gray-900 transition-colors"
             >
               {subService.name}
+             
             </label>
           </div>
         ))}
