@@ -27,7 +27,13 @@ export const services: Service[] = [
       { id: "website-6", name: "Google Maps Integration" },
       { id: "website-7", name: "Hosting & Domain Setup" },
       { id: "website-8", name: "CMS (WordPress / Webflow / Custom)" },
-      { id: "website-9", name: "Multilingual Setup (English + Arabic for UAE)" }
+      { id: "website-9", name: "Multilingual Setup (English + Arabic for UAE)" },
+       { id: "website-10", name: "Social Media Integration" },
+      { id: "website-11", name: "3-5 pages" },
+      { id: "website-12", name: "5-10 pages" },
+      { id: "website-13", name: "10-15 pages" },
+      { id: "website-14", name: "15 + pages" },
+      { id: "website-15", name: "Seo Friendly Content (complementery)" },
     ]
   },
   {
