@@ -366,12 +366,7 @@ const PdfDocument: React.FC<PdfDocumentProps> = ({ data }) => {
               {formatAED((data.subtotal || 0) * ((data.discount || 0) / 100))}
             </Text>
           </View>
-          <View style={styles.totalRow}>
-            <Text style={styles.totalLabel}>Tax ({data.tax || 0}%):</Text>
-            <Text style={styles.totalValue}>
-              {formatAED((data.subtotal || 0) * (1 - (data.discount || 0) / 100) * ((data.tax || 0) / 100))}
-            </Text>
-          </View>
+         
           <View style={[styles.totalRow, styles.grandTotal]}>
             <Text style={styles.totalLabel}>Total:</Text>
             <Text style={styles.totalValue}>{formatAED(data.total || 0)}</Text>

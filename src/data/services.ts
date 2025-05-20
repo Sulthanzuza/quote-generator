@@ -33,7 +33,7 @@ export const services: Service[] = [
       { id: "website-12", name: "5-10 pages" },
       { id: "website-13", name: "10-15 pages" },
       { id: "website-14", name: "15 + pages" },
-      { id: "website-15", name: "Seo Friendly Content (complementery)" },
+      { id: "website-15", name: "Seo Friendly Content (complimentary)" },
     ]
   },
   {

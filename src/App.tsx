@@ -46,7 +46,7 @@ function App() {
   const [lineItems, setLineItems] = useState<LineItem[]>([]);
   const [subtotal, setSubtotal] = useState<number>(0);
   const [discount, setDiscount] = useState<number>(0);
-  const [tax, setTax] = useState<number>(5); // Default 5% VAT
+
   const [total, setTotal] = useState<number>(0);
   const [notes, setNotes] = useState<string>('');
   const [showPdfPreview, setShowPdfPreview] = useState<boolean>(false);
@@ -67,9 +67,9 @@ function App() {
     const newSubtotal = calculateSubtotal(lineItems);
     setSubtotal(newSubtotal);
 
-    const newTotal = calculateTotal(newSubtotal, discount, tax);
+    const newTotal = calculateTotal(newSubtotal, discount);
     setTotal(newTotal);
-  }, [lineItems, discount, tax]);
+  }, [lineItems, discount]);
 
   const handleSave = () => {
     const data: EstimateData = {
@@ -81,7 +81,7 @@ function App() {
       lineItems,
       subtotal,
       discount,
-      tax,
+   
       total,
       notes,
     };
@@ -99,7 +99,7 @@ function App() {
       setValidUntil(calculateFutureDate(30).toISOString().split('T')[0]);
       setLineItems([]);
       setDiscount(0);
-      setTax(5);
+     
       setNotes('');
       localStorage.removeItem('quoteData');
     }
@@ -121,7 +121,7 @@ function App() {
         setValidUntil(data.validUntil);
         setLineItems(data.lineItems);
         setDiscount(data.discount);
-        setTax(data.tax);
+        
         setNotes(data.notes);
       } catch (error) {
         console.error('Error loading saved data:', error);
@@ -138,7 +138,7 @@ function App() {
     lineItems,
     subtotal,
     discount,
-    tax,
+ 
     total,
     notes,
   };
@@ -176,8 +176,7 @@ function App() {
                  
                   total={total}
                   onDiscountChange={setDiscount}
-                  onTaxChange={setTax}
-                />
+                                 />
               </div>
             </div>
 
