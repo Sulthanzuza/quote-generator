@@ -23,7 +23,7 @@ import {
 function App() {
   const defaultCompanyInfo: CompanyInfo = {
     name: 'Aieera Digital Marketing',
-    phone: '+971 54 545 8167',
+    phone: '',
     email: 'hello@aieera.com',
     website: 'https://www.aieera.com',
   };
@@ -35,8 +35,10 @@ function App() {
     phone: '',
     email: '',
   };
+  
 
   const [companyInfo, setCompanyInfo] = useState<CompanyInfo>(defaultCompanyInfo);
+  
   const [clientInfo, setClientInfo] = useState<ClientInfo>(defaultClientInfo);
   const [quoteNumber, setQuoteNumber] = useState<string>(generateQuoteNumber());
   const [date, setDate] = useState<string>(new Date().toISOString().split('T')[0]);
@@ -51,18 +53,24 @@ function App() {
   const [notes, setNotes] = useState<string>('');
   const [showPdfPreview, setShowPdfPreview] = useState<boolean>(false);
   const [isPdfGenerating, setIsPdfGenerating] = useState(false);
-  const handleDownloadPdf = async () => {
-    setIsPdfGenerating(true);
-    try {
-      const blob = await pdf(<PdfDocument data={estimateData} />).toBlob();
-      saveAs(blob, `Quote-${quoteNumber}.pdf`);
-    } catch (error) {
-      console.error('Error generating PDF:', error);
-      alert('Error generating PDF. Please try again.');
-    } finally {
-      setIsPdfGenerating(false);
-    }
-  };
+const handleDownloadPdf = async () => {
+  setIsPdfGenerating(true);
+  try {
+    const blob = await pdf(<PdfDocument data={estimateData} />).toBlob();
+    
+    const safeClientCompany = clientInfo.company.replace(/[^\w\s]/gi, '').replace(/\s+/g, '_') || 'NoCompany';
+    
+    // Create filename with your company and client company names
+    const filename = `${safeClientCompany}_Quote_${quoteNumber}.pdf`;
+    
+    saveAs(blob, filename);
+  } catch (error) {
+    console.error('Error generating PDF:', error);
+    alert('Error generating PDF. Please try again.');
+  } finally {
+    setIsPdfGenerating(false);
+  }
+};
   useEffect(() => {
     const newSubtotal = calculateSubtotal(lineItems);
     setSubtotal(newSubtotal);

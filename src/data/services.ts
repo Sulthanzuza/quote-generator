@@ -173,7 +173,38 @@ export const services: Service[] = [
       { id: "other-5", name: "PR & Media Outreach" },
       { id: "other-6", name: "Event/Expo Support" }
     ]
-  }
+  },
+  {
+  id: "e-commerce-website",
+  name: "E-commerce Website",
+  subServices: [
+  { id: "ecom-1", name: "Custom UI/UX Design for Conversions" },
+  { id: "ecom-2", name: "Mobile-Responsive & Fast Loading Website" },
+  { id: "ecom-3", name: "Product Catalog & Categories Setup" },
+  { id: "ecom-4", name: "Shopping Cart & Checkout Integration" },
+  { id: "ecom-5", name: "Multiple Payment Gateway Integration (Razorpay, Stripe, etc.)" },
+  { id: "ecom-6", name: "Inventory & Order Management System" },
+  { id: "ecom-7", name: "Customer Login & Dashboard" },
+  { id: "ecom-8", name: "Email Notifications for Orders" },
+  { id: "ecom-9", name: "Coupons & Offer Management System" },
+  { id: "ecom-10", name: "Social Media Integration" },
+  { id: "ecom-11", name: "Chatbot Integration (WhatsApp, Messenger, etc.)" },
+  { id: "ecom-12", name: "Blog for SEO & Content Marketing" },
+  { id: "ecom-13", name: "SEO-Friendly Structure & Meta Optimization" },
+  { id: "ecom-14", name: "Multilingual Setup (English + Arabic for UAE Market)" },
+  { id: "ecom-15", name: "Google Analytics & Facebook Pixel Integration" },
+  { id: "ecom-16", name: "Hosting, Domain, and SSL Setup" },
+  { id: "ecom-17", name: "Admin Panel to Manage Products, Orders & Customers" },
+  { id: "ecom-18", name: "Secure Database Integration (MongoDB / MySQL / PostgreSQL)" },
+  { id: "ecom-20", name: "Server Deployment & Optimization (Render / Vercel / VPS)" },
+  { id: "ecom-21", name: "API Integration for External Services (Shipping, CRM, etc.)" },
+  { id: "ecom-22", name: "Training & Post-Launch Support" },
+  { id: "ecom-23", name: "10+ Pages Storefront" },
+  { id: "ecom-24", name: "Free SEO Copywriting for Product Pages" }
+]
+}
+
+
 ];
 
 export const getServiceById = (id: string): Service | undefined => {
