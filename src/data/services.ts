@@ -163,6 +163,112 @@ export const services: Service[] = [
     ]
   },
   {
+    "id": "webapp-user-features",
+    "name": "User Features",
+    "subServices": [
+      { "id": "webapp-user-search-1", "name": "Search workshops by location, service type, ratings" },
+      { "id": "webapp-user-search-2", "name": "Browse spare parts by category, car model, brand" },
+      { "id": "webapp-user-search-3", "name": "Apply filters (price, location, brand, availability)" },
+      { "id": "webapp-user-search-4", "name": "Sort by price, rating, delivery time" },
+      { "id": "webapp-user-booking-1", "name": "Book workshop visit to user location" },
+      { "id": "webapp-user-booking-2", "name": "Book appointment at merchant location" },
+      { "id": "webapp-user-booking-3", "name": "View workshop ratings, reviews, service time" },
+      { "id": "webapp-user-booking-4", "name": "Track booking status (requested → done)" },
+      { "id": "webapp-user-ecommerce-1", "name": "Add to Cart, Checkout, COD or online" },
+      { "id": "webapp-user-ecommerce-2", "name": "Apply offers/coupons" },
+      { "id": "webapp-user-ecommerce-3", "name": "Track orders" },
+      { "id": "webapp-user-ecommerce-4", "name": "View order history & download invoice" },
+      { "id": "webapp-user-wallet-1", "name": "Earn via referrals or promo codes" },
+      { "id": "webapp-user-wallet-2", "name": "Spend wallet balance on booking or ordering" },
+      { "id": "webapp-user-wallet-3", "name": "View wallet transaction history" },
+      { "id": "webapp-user-offers-1", "name": "Apply coupons during checkout/booking" },
+      { "id": "webapp-user-offers-2", "name": "View active offers" },
+      { "id": "webapp-user-complaints-1", "name": "Raise complaint about workshop or order" },
+      { "id": "webapp-user-complaints-2", "name": "View complaint status" }
+    ]
+  },
+  {
+    "id": "webapp-workshop-panel",
+    "name": "Workshop Merchant Panel",
+    "subServices": [
+      { "id": "webapp-workshop-jobs-1", "name": "View all assigned bookings" },
+      { "id": "webapp-workshop-jobs-2", "name": "Accept or decline jobs" },
+      { "id": "webapp-workshop-jobs-3", "name": "Update service status" },
+      { "id": "webapp-workshop-jobs-4", "name": "Upload diagnostic photos/comments" },
+      { "id": "webapp-workshop-jobs-5", "name": "Upload/download service report" },
+      { "id": "webapp-workshop-customer-1", "name": "View customer details & address" },
+      { "id": "webapp-workshop-customer-2", "name": "Map for navigation to customer" },
+      { "id": "webapp-workshop-payments-1", "name": "View job payments (commission deducted)" },
+      { "id": "webapp-workshop-payments-2", "name": "Wallet with withdrawal request" },
+      { "id": "webapp-workshop-payments-3", "name": "Download payment slips" },
+      { "id": "webapp-workshop-offers-1", "name": "Opt-in to platform-wide offers" },
+      { "id": "webapp-workshop-offers-2", "name": "View coupon usage stats" },
+      { "id": "webapp-workshop-complaints-1", "name": "Raise support ticket to admin" },
+      { "id": "webapp-workshop-dashboard-1", "name": "Dashboard with jobs, ratings, earnings" }
+    ]
+  },
+  {
+    "id": "webapp-seller-panel",
+    "name": "Spare Parts Seller Panel",
+    "subServices": [
+      { "id": "webapp-seller-products-1", "name": "Add/edit/delete products" },
+      { "id": "webapp-seller-products-2", "name": "Assign category & brand" },
+      { "id": "webapp-seller-products-3", "name": "Set availability by location" },
+      { "id": "webapp-seller-products-4", "name": "Inventory management with alerts" },
+      { "id": "webapp-seller-orders-1", "name": "View/manage orders" },
+      { "id": "webapp-seller-orders-2", "name": "Upload tracking ID, mark as shipped" },
+      { "id": "webapp-seller-orders-3", "name": "Download invoices" },
+      { "id": "webapp-seller-promotions-1", "name": "Create offers/coupons" },
+      { "id": "webapp-seller-promotions-2", "name": "Track coupon redemptions & conversions" },
+      { "id": "webapp-seller-payments-1", "name": "Track earnings & refunds" },
+      { "id": "webapp-seller-payments-2", "name": "Wallet with withdrawal requests" },
+      { "id": "webapp-seller-payments-3", "name": "Download payment slips" },
+      { "id": "webapp-seller-complaints-1", "name": "Raise complaint to admin" },
+      { "id": "webapp-seller-dashboard-1", "name": "Dashboard with sales, returns, top products" }
+    ]
+  },
+  {
+    "id": "webapp-admin-panel",
+    "name": "Admin Panel",
+    "subServices": [
+      { "id": "webapp-admin-users-1", "name": "Manage users, workshops, sellers" },
+      { "id": "webapp-admin-users-2", "name": "Approve/reject KYC" },
+      { "id": "webapp-admin-users-3", "name": "Block/unblock accounts" },
+      { "id": "webapp-admin-orders-1", "name": "View all bookings/orders" },
+      { "id": "webapp-admin-orders-2", "name": "Filter and reassign bookings" },
+      { "id": "webapp-admin-orders-3", "name": "Issue refunds manually" },
+      { "id": "webapp-admin-payments-1", "name": "Set commission %" },
+      { "id": "webapp-admin-payments-2", "name": "Approve withdrawal requests" },
+      { "id": "webapp-admin-payments-3", "name": "Upload/manage payment slips" },
+      { "id": "webapp-admin-payments-4", "name": "Generate merchant statements" },
+      { "id": "webapp-admin-offers-1", "name": "Create and manage offers/coupons" },
+      { "id": "webapp-admin-offers-2", "name": "Approve/reject merchant offers" },
+      { "id": "webapp-admin-offers-3", "name": "View coupon analytics" },
+      { "id": "webapp-admin-discovery-1", "name": "Search and assign workshops" },
+      { "id": "webapp-admin-discovery-2", "name": "Geo-location and mapping" },
+      { "id": "webapp-admin-complaints-1", "name": "Handle complaints from users/merchants" },
+      { "id": "webapp-admin-complaints-2", "name": "Assign handlers and track SLAs" },
+      { "id": "webapp-admin-analytics-1", "name": "Revenue reports, trends, merchant stats" },
+      { "id": "webapp-admin-analytics-2", "name": "Export reports to CSV/PDF" },
+      { "id": "webapp-admin-settings-1", "name": "Control taxes, wallet rules, referral bonuses" },
+      { "id": "webapp-admin-settings-2", "name": "CMS for terms, privacy, etc." }
+    ]
+  },
+  {
+    "id": "webapp-bonus",
+    "name": "Bonus Features",
+    "subServices": [
+      { "id": "webapp-bonus-1", "name": "Push Notifications" },
+      { "id": "webapp-bonus-2", "name": "Role-Based Access Control" },
+      { "id": "webapp-bonus-3", "name": "PWA or Mobile App" },
+      { "id": "webapp-bonus-4", "name": "Merchant Performance Report" },
+      { "id": "webapp-bonus-5", "name": "Bulk Import/Export" },
+      { "id": "webapp-bonus-6", "name": "SKU/QR Code Support" }
+    ]
+  }
+,
+
+  {
     id: "other",
     name: "Other Services",
     subServices: [
