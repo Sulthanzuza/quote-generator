@@ -27,6 +27,13 @@ export const calculateFutureDate = (days: number): Date => {
 export const formatAED = (amount: number): string => {
   return `AED ${amount.toLocaleString('en-AE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 };
+// helpers.ts
+export const formatINR = (value: number): string => {
+  return `₹${value.toLocaleString('en-IN', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  })}`;
+};
 
 export const calculateLineItemAmount = (quantity: number, rate: number): number => {
   return quantity * rate;

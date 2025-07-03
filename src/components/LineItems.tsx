@@ -5,12 +5,29 @@ import SubServiceChecklist from './SubServiceChecklist';
 import { generateUniqueId, calculateLineItemAmount, formatAED } from '../utils/helpers';
 import { Plus, Trash2 } from 'lucide-react';
 
+// Currency formatting utilities
+const formatCurrency = (amount: number, currency: 'AED' | 'INR'): string => {
+  if (currency === 'AED') {
+    return formatAED(amount);
+  } else {
+    return `₹${amount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  }
+};
+
 interface LineItemsProps {
   lineItems: LineItem[];
   onChange: (items: LineItem[]) => void;
+  currency?: 'AED' | 'INR';
+  onCurrencyChange?: (currency: 'AED' | 'INR') => void;
 }
 
-const LineItemsComponent: React.FC<LineItemsProps> = ({ lineItems, onChange }) => {
+const LineItemsComponent: React.FC<LineItemsProps> = ({ 
+  lineItems, 
+  onChange, 
+  currency = 'INR',
+onCurrencyChange = undefined
+
+}) => {
   const [expandedItemId, setExpandedItemId] = useState<string | null>(null);
 
   const handleServiceChange = (id: string, serviceId: string) => {
@@ -101,9 +118,31 @@ const LineItemsComponent: React.FC<LineItemsProps> = ({ lineItems, onChange }) =
     setExpandedItemId(expandedItemId === id ? null : id);
   };
 
+  const handleCurrencyChange = (newCurrency: 'AED' | 'INR') => {
+    if (onCurrencyChange) {
+      onCurrencyChange(newCurrency);
+    }
+  };
+
   return (
     <div className="bg-white rounded-lg shadow-sm p-6 mb-6 border border-gray-100">
-      <h2 className="text-lg font-semibold text-gray-800 mb-4">Line Items</h2>
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-lg font-semibold text-gray-800">Line Items</h2>
+        {onCurrencyChange && (
+  <div className="flex items-center space-x-2">
+    <label className="text-sm font-medium text-gray-700">Currency:</label>
+    <select
+      value={currency}
+      onChange={(e) => handleCurrencyChange(e.target.value as 'AED' | 'INR')}
+      className="border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+    >
+      <option value="INR">INR (₹)</option>
+      <option value="AED">AED (د.إ)</option>
+    </select>
+  </div>
+)}
+
+      </div>
       
       <div className="overflow-x-auto">
         <table className="min-w-full divide-y divide-gray-200">
@@ -116,10 +155,10 @@ const LineItemsComponent: React.FC<LineItemsProps> = ({ lineItems, onChange }) =
                 Quantity
               </th>
               <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/6">
-                Rate (AED)
+                Rate ({currency})
               </th>
               <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/6">
-                Amount (AED)
+                Amount ({currency})
               </th>
               <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/12">
                 Actions
@@ -146,13 +185,12 @@ const LineItemsComponent: React.FC<LineItemsProps> = ({ lineItems, onChange }) =
                         ))}
                       </select>
                       {item.description && (
-                       <div
-  className="text-sm text-gray-600 mt-1 break-words"
-  style={{ maxWidth: '10cm', whiteSpace: 'pre-line' }}
->
-  {item.description}
-</div>
-
+                        <div
+                          className="text-sm text-gray-600 mt-1 break-words"
+                          style={{ maxWidth: '10cm', whiteSpace: 'pre-line' }}
+                        >
+                          {item.description}
+                        </div>
                       )}
                     </div>
                   </td>
@@ -170,14 +208,16 @@ const LineItemsComponent: React.FC<LineItemsProps> = ({ lineItems, onChange }) =
                     <input
                       type="number"
                       min="0"
+                      step="0.01"
                       value={item.rate}
                       onChange={(e) => handleRateChange(item.id, parseFloat(e.target.value) || 0)}
                       className="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                       onClick={(e) => e.stopPropagation()}
+                      placeholder={`0.00 ${currency}`}
                     />
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {formatAED(item.amount)}
+                    {formatCurrency(item.amount, currency)}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     <button

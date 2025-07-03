@@ -34,6 +34,9 @@ export const services: Service[] = [
       { id: "website-13", name: "10-15 pages" },
       { id: "website-14", name: "15 + pages" },
       { id: "website-15", name: "Seo Friendly Content (complimentary)" },
+      { id: "website-16", name: "Website Maintainence" },
+      { id: "website-17", name: "Content Writing & Visual Creation" },
+    
     ]
   },
   {
@@ -49,7 +52,8 @@ export const services: Service[] = [
       { id: "seo-7", name: "Competitor Analysis" },
       { id: "seo-8", name: "SEO Audit Reports" },
       { id: "seo-9", name: "Google Search Console & GA4 Setup" },
-      { id: "seo-10", name: "Monthly Ranking & Traffic Reports" }
+      { id: "seo-10", name: "Monthly Ranking & Traffic Reports" },
+       { id: "seo-11", name: "Content Startegy" }
     ]
   },
   {
@@ -65,7 +69,8 @@ export const services: Service[] = [
       { id: "smm-7", name: "Caption Writing + Hashtag Strategy" },
       { id: "smm-8", name: "Community Management" },
       { id: "smm-9", name: "Influencer Outreach" },
-      { id: "smm-10", name: "Monthly Reporting" }
+      { id: "smm-10", name: "Monthly Reporting" },
+      { id: "smm-11", name: "Paid Promotions" }
     ]
   },
   {
@@ -159,7 +164,8 @@ export const services: Service[] = [
       { id: "strategy-2", name: "Go-to-Market Plan" },
       { id: "strategy-3", name: "Brand Positioning" },
       { id: "strategy-4", name: "Budget Planning" },
-      { id: "strategy-5", name: "Consulting Sessions" }
+      { id: "strategy-5", name: "Consulting Sessions" },
+     { id: "strategy-6", name: "Content Strategy" }
     ]
   },
   {
@@ -329,4 +335,7 @@ export const getServiceNameById = (id: string): string => {
 
 export const formatAED = (amount: number): string => {
   return `AED ${amount.toLocaleString('en-AE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+};
+export const formatINR = (amount: number): string => {
+  return `INR ${amount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 };

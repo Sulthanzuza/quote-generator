@@ -9,7 +9,7 @@ import {
   Image
 } from '@react-pdf/renderer';
 import { EstimateData, LineItem } from '../types';
-import { formatAED } from '../utils/helpers';
+import { formatINR } from '../utils/helpers';
 import { getServiceById } from '../data/services';
 import Logo from '../../Single logo with black gradient.png'
 
@@ -378,10 +378,10 @@ const PdfDocument: React.FC<PdfDocumentProps> = ({ data }) => {
                 </View>
                 <Text style={styles.tableCellQuantity}>{item.quantity || 1}</Text>
                 <Text style={styles.tableCellRate}>
-                  {formatAED(item.rate || 0)}
+                  {formatINR(item.rate || 0)}
                 </Text>
                 <Text style={styles.tableCellAmount}>
-                  {formatAED(item.amount || 0)}
+                  {formatINR(item.amount || 0)}
                 </Text>
               </View>
             </View>
@@ -392,18 +392,18 @@ const PdfDocument: React.FC<PdfDocumentProps> = ({ data }) => {
         <View style={styles.totalsSection}>
           <View style={styles.totalRow}>
             <Text style={styles.totalLabel}>Subtotal:</Text>
-            <Text style={styles.totalValue}>{formatAED(data.subtotal || 0)}</Text>
+            <Text style={styles.totalValue}>{formatINR(data.subtotal || 0)}</Text>
           </View>
           <View style={styles.totalRow}>
             <Text style={styles.totalLabel}>Discount ({data.discount || 0}%):</Text>
             <Text style={styles.totalValue}>
-              {formatAED((data.subtotal || 0) * ((data.discount || 0) / 100))}
+              {formatINR((data.subtotal || 0) * ((data.discount || 0) / 100))}
             </Text>
           </View>
          
           <View style={[styles.totalRow, styles.grandTotal]}>
             <Text style={styles.totalLabel}>Total:</Text>
-            <Text style={styles.totalValue}>{formatAED(data.total || 0)}</Text>
+            <Text style={styles.totalValue}>{formatINR(data.total || 0)}</Text>
           </View>
         </View>
 
