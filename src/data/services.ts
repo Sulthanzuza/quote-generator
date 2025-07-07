@@ -339,3 +339,7 @@ export const formatAED = (amount: number): string => {
 export const formatINR = (amount: number): string => {
   return `INR ${amount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 };
+
+export const formatCurrency = (amount: number, currency: 'INR' | 'AED'): string => {
+  return currency === 'AED' ? formatAED(amount) : formatINR(amount);
+};
